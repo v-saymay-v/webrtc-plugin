@@ -12,6 +12,24 @@
 #include "Helper.h"
 #include "ATLBrowserCallback.h"
 #include "DoubangoDesktopCapturer.h"
+#include "barlib.h"
+
+#include <exdisp.h>
+#include <exdispid.h>
+
+// _Window
+typedef struct __Window {
+	intptr_t id;
+	std::string title;
+	__Window(intptr_t id_, std::string title_) {
+		id = id_;
+		title = title_;
+	}
+}
+_Window;
+typedef std::vector<_Window> _WindowList;
+
+extern HINSTANCE g_hInst;
 
 static const wchar_t kWindowlessClassName[] = L"RTCWindowlessClass";
 static const wchar_t kWindowlessTitle[] = L"RTCWindowlessTitle";
@@ -583,6 +601,53 @@ STDMETHODIMP CPlugin::bindEventListener(__in BSTR type, __in_opt VARIANT listene
 	}
 
 	delete[] lpszType;
+
+	return S_OK;
+}
+
+STDMETHODIMP CPlugin::SetSite(IUnknown *pUnkSite)
+{
+	_webBrowser2 = pUnkSite; 
+	if( _webBrowser2 == NULL )
+		return E_INVALIDARG;
+
+	_browserConnectionPointerContainer = _webBrowser2;
+	if( _browserConnectionPointerContainer == NULL )
+		return E_POINTER;
+
+	CComPtr<IConnectionPoint> connectionPoint;
+	HRESULT hr = _browserConnectionPointerContainer->FindConnectionPoint( DIID_DWebBrowserEvents2, &connectionPoint );
+	if( FAILED( hr ) )
+		return hr;
+	hr = connectionPoint->Advise( reinterpret_cast<IDispatch*>( this ), &_browserConnectionToken );
+
+	if( hr == S_OK )
+	{
+		HWND parent ;
+		_webBrowser2->get_HWND( (SHANDLE_PTR*)&parent );
+
+		HWND addressBarWnd, cmdTargetWnd;
+		if( ::FindAddressBar( parent, &addressBarWnd, &cmdTargetWnd ) )
+			_proxy = new CAddressBarAccessProxy( g_hInst, addressBarWnd, cmdTargetWnd );
+	}
+
+	return hr;
+}
+
+STDMETHODIMP CPlugin::Invoke(DISPID dispidMember, REFIID riid,
+	LCID lcid, WORD wFlags, DISPPARAMS* pDispParams,
+	VARIANT* pvarResult, EXCEPINFO* pExcepInfo, UINT* puArgErr)
+{
+	if (dispidMember == DISPID_WINDOWSTATECHANGED)
+	{
+		DWORD flags = pDispParams->rgvarg[1].intVal;
+		DWORD valid = pDispParams->rgvarg[0].intVal;
+
+		// check whether the event is raised because tab became active
+		if ((valid & OLECMDIDF_WINDOWSTATE_USERVISIBLE) != 0 && (flags & OLECMDIDF_WINDOWSTATE_USERVISIBLE) != 0 &&
+			(valid & OLECMDIDF_WINDOWSTATE_ENABLED) != 0 && (flags & OLECMDIDF_WINDOWSTATE_ENABLED) != 0)
+			_proxy->SetCurrent();
+	}
 
 	return S_OK;
 }

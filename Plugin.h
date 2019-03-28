@@ -7,6 +7,7 @@
 #include "AsyncEvent.h"
 #include "Display.h"
 #include "Buffer.h"
+#include "barlib.h"
 
 #include <comutil.h>
 #include <stdio.h>
@@ -37,6 +38,7 @@ class ATL_NO_VTABLE CPlugin :
 	public IPersistPropertyBagImpl<CPlugin>,
 	public ISpecifyPropertyPagesImpl<CPlugin>,
 	public IQuickActivateImpl<CPlugin>,
+	public IObjectWithSiteImpl<CPlugin>,
 #ifndef _WIN32_WCE
 	public IDataObjectImpl<CPlugin>,
 #endif
@@ -97,6 +99,7 @@ BEGIN_COM_MAP(CPlugin)
 	COM_INTERFACE_ENTRY_IID(IID_IObjectSafety, IObjectSafety)
 #endif
 	COM_INTERFACE_ENTRY(IObjectSafety)
+	COM_INTERFACE_ENTRY(IObjectWithSite)
 END_COM_MAP()
 
 BEGIN_PROP_MAP(CPlugin)
@@ -209,6 +212,11 @@ END_MSG_MAP()
 
 	STDMETHOD(bindEventListener)(__in BSTR type, __in_opt VARIANT listenerCallback, __in_opt VARIANT useCapture) override;
 
+	STDMETHOD(SetSite)(IUnknown *pUnkSite);
+	STDMETHOD(Invoke)(DISPID dispidMember, REFIID riid,
+		LCID lcid, WORD wFlags, DISPPARAMS* pDispParams,
+		VARIANT* pvarResult, EXCEPINFO* pExcepInfo, UINT* puArgErr);
+
 private:
 	HRESULT QueryWindow();
 	static LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -223,6 +231,11 @@ private:
 	CComPtr<IHTMLWindow2> m_spWindow;
 	HWND m_hWindowlessHandle;
 	BOOL m_bVideoRendererStarted;
+
+	CComQIPtr<IWebBrowser2, &IID_IWebBrowser2> _webBrowser2;
+	CComQIPtr<IConnectionPointContainer, &IID_IConnectionPointContainer> _browserConnectionPointerContainer;
+	DWORD _browserConnectionToken;
+	CAddressBarAccessProxy* _proxy;
 
 	static CPlugin* s_Singleton;
 	static HINSTANCE s_hInstance;

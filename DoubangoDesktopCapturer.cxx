@@ -1,6 +1,9 @@
+#include "stdafx.h"
 #include "DoubangoDesktopCapturer.h"
 #include "ExRTCScreen.h"
 #include "ExRTCWindow.h"
+#include "Utils.h"
+#include "Display.h"
 
 #include "webrtc/base/constructormagic.h"
 #include "webrtc/modules/desktop_capture/desktop_capturer.h"
@@ -469,6 +472,9 @@ std::vector<std::shared_ptr<ExRTCScreen> > DoubangoDesktopCapturerFactory::GetSc
 
 std::vector<std::shared_ptr<ExRTCWindow> > DoubangoDesktopCapturerFactory::GetWindows()
 {
+	static const int kWindowPreviewWidth = 640;
+	static const int kWindowPreviewHeight = 480;
+
 	std::vector<std::shared_ptr<ExRTCWindow> > windows;
 
 	webrtc::DesktopCaptureOptions options = webrtc::DesktopCaptureOptions::CreateDefault();
@@ -479,8 +485,171 @@ std::vector<std::shared_ptr<ExRTCWindow> > DoubangoDesktopCapturerFactory::GetWi
 	if (capturer.get()) {
 		webrtc::DesktopCapturer::SourceList sourceList;
 		if (capturer->GetSourceList(&sourceList)) {
+			HRESULT hr = S_OK;
+			HBRUSH hBrush = ::CreateSolidBrush(RGB(0, 0, 0));
+			if (!hBrush) {
+				return windows;
+			}
 			for (webrtc::DesktopCapturer::SourceList::iterator it = sourceList.begin(); it < sourceList.end(); ++it) {
-				windows.push_back(std::make_shared<ExRTCWindow>(it->id, it->title));
+				RECT rcSrc;
+				DWORD dwBmpSize;
+				LONG width, height;
+				BITMAPINFOHEADER bi;
+				void *np_base64_ptr = NULL, *bmp_ptr = NULL;
+				size_t base64_size = 0, bmp_size = 0;
+				void *pvBits0 = NULL, *pvBits1 = NULL;
+				HBITMAP hBitmap = NULL, hOldBitmap = NULL;
+				HDC hSrcDC = NULL, hMemDC = NULL;
+				char windowId[120] = { 0 };
+				HWND hWnd = reinterpret_cast<HWND>(it->id);
+				std::string strWindows = "";
+
+				hSrcDC = ::GetDC(hWnd);
+				if (!hSrcDC) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::GetDC(hWnd)' failed";
+					return windows;
+				}
+				hMemDC = ::CreateCompatibleDC(hSrcDC);
+				if (!hMemDC) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::CreateCompatibleDC(hSrcDC)' failed";
+					return windows;
+				}
+
+				// get points of rectangle to grab
+				if (::GetWindowRect(hWnd, &rcSrc) != TRUE) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::GetWindowRect(hWnd, &rcSrc)' failed";
+					return windows;
+				}
+				width = rcSrc.right - rcSrc.left;
+				height = rcSrc.bottom - rcSrc.top;
+
+				hBitmap = ::CreateCompatibleBitmap(hSrcDC, width, height);
+				if (!hBitmap) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::CreateCompatibleBitmap(hSrcDC, width, height)' failed";
+					return windows;
+				}
+
+				// select new bitmap into memory DC
+				hOldBitmap = (HBITMAP)::SelectObject(hMemDC, hBitmap);
+
+				// bitblt screen DC to memory DC
+				::BitBlt(hMemDC, 0, 0, width, height, hSrcDC, 0, 0, SRCCOPY);
+
+				bi.biSize = sizeof(BITMAPINFOHEADER);
+				bi.biWidth = width;
+				bi.biHeight = -height;
+				bi.biPlanes = 1;
+				bi.biBitCount = 32;
+				bi.biCompression = BI_RGB;
+				bi.biSizeImage = 0;
+				bi.biXPelsPerMeter = 0;
+				bi.biYPelsPerMeter = 0;
+				bi.biClrUsed = 0;
+				bi.biClrImportant = 0;
+				dwBmpSize = ((width * bi.biBitCount + 31) / 32) * 4 * height;
+				if (!(pvBits0 = ::VirtualAlloc(NULL, dwBmpSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE))) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::VirtualAlloc' failed";
+					return windows;
+				}
+
+				// select old bitmap back into memory DC and get handle to
+				// bitmap of the screen   
+				hBitmap = (HBITMAP)::SelectObject(hMemDC, hOldBitmap);
+
+				// Copy the bitmap data into the provided BYTE buffer
+				::GetDIBits(hSrcDC, hBitmap, 0, height, pvBits0, (BITMAPINFO *)&bi, DIB_RGB_COLORS);
+
+				///////////////////////////////////////////////////////////////////////////////////////
+
+				// Delete Objects and draw preview
+				::DeleteDC(hMemDC), hMemDC = NULL;
+				::DeleteObject(hBitmap), hBitmap = NULL;
+
+				static const Ratio pixelAR = { 1, 1 };
+				const RECT _rcDest = { 0, 0, kWindowPreviewWidth, kWindowPreviewHeight };
+				rcSrc = ::CorrectAspectRatio(rcSrc, pixelAR);
+				const RECT rcDest = ::LetterBoxRect(rcSrc, _rcDest);
+
+				hMemDC = ::CreateCompatibleDC(hSrcDC);
+				if (!hMemDC) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::CreateCompatibleDC(hSrcDC)' failed";
+					return windows;
+				}
+				hBitmap = ::CreateCompatibleBitmap(hSrcDC, kWindowPreviewWidth, kWindowPreviewHeight);
+				if (!hBitmap) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::CreateCompatibleBitmap(hSrcDC, kWindowPreviewWidth, kWindowPreviewHeight)' failed";
+					return windows;
+				}
+				hOldBitmap = (HBITMAP)::SelectObject(hMemDC, hBitmap);
+
+				::FillRect(hMemDC, &_rcDest, hBrush);
+				::SetStretchBltMode(hMemDC, HALFTONE);
+				::StretchDIBits(
+					hMemDC,
+					rcDest.left, rcDest.top, ::Width(rcDest), ::Height(rcDest),
+					rcSrc.left, rcSrc.top, ::Width(rcSrc), ::Height(rcSrc),
+					pvBits0,
+					(BITMAPINFO *)&bi,
+					DIB_RGB_COLORS,
+					SRCCOPY);
+
+				hBitmap = (HBITMAP)::SelectObject(hMemDC, hOldBitmap);
+
+				bi.biSize = sizeof(BITMAPINFOHEADER);
+				bi.biWidth = kWindowPreviewWidth;
+				bi.biHeight = -kWindowPreviewHeight;
+				bi.biPlanes = 1;
+				bi.biBitCount = 32;
+				bi.biCompression = BI_RGB;
+				bi.biSizeImage = 0;
+				bi.biXPelsPerMeter = 0;
+				bi.biYPelsPerMeter = 0;
+				bi.biClrUsed = 0;
+				bi.biClrImportant = 0;
+				dwBmpSize = ((kWindowPreviewWidth * bi.biBitCount + 31) / 32) * 4 * kWindowPreviewHeight;
+				if (!(pvBits1 = ::VirtualAlloc(NULL, dwBmpSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE))) {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::VirtualAlloc(NULL, dwBmpSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE)' failed";
+					return windows;
+				}
+
+				::GetDIBits(hMemDC, hBitmap, 0, kWindowPreviewHeight, pvBits1, (BITMAPINFO *)&bi, DIB_RGB_COLORS);
+
+				// Convert to BMP
+				if (Utils::ConvertToBMP(pvBits1, kWindowPreviewWidth, kWindowPreviewHeight, &bmp_ptr, &bmp_size) == S_OK) {
+					// Convert to Base64
+					if (Utils::ConvertToBase64(bmp_ptr, bmp_size, &np_base64_ptr, &base64_size, NULL) == S_OK) {
+						strWindows = std::string((const char*)np_base64_ptr, base64_size); // Concat(Screenshot64)
+					}
+					else {
+						LOG(LS_ERROR) << "DoubangoDesktopCapturer '::ConvertToBase64(bmp_ptr, bmp_size, &np_base64_ptr, &base64_size, NULL)' failed";
+					}
+					// np_base64_ptr and bmp_ptr were allocated by the DLL, let the DLL free them to avoid DLL-crossing issue
+					Utils::StdMemFree(&np_base64_ptr);
+					Utils::StdMemFree(&bmp_ptr);
+				}
+				else {
+					LOG(LS_ERROR) << "DoubangoDesktopCapturer '::ConvertToBMP(pvBits1, kWindowPreviewWidth, kWindowPreviewHeight, &bmp_ptr, &bmp_size)' failed";
+					return windows;
+				}
+
+				// Cleanup
+				if (hSrcDC) {
+					::ReleaseDC(hWnd, hSrcDC), hSrcDC = NULL;
+				}
+				if (hMemDC) {
+					::DeleteDC(hMemDC), hMemDC = NULL;
+				}
+				if (hBitmap) {
+					::DeleteObject(hBitmap), hBitmap = NULL;
+				}
+				if (pvBits0) {
+					::VirtualFree(pvBits0, 0, MEM_RELEASE), pvBits0 = NULL;
+				}
+				if (pvBits1) {
+					::VirtualFree(pvBits1, 0, MEM_RELEASE), pvBits1 = NULL;
+				}
+
+				windows.push_back(std::make_shared<ExRTCWindow>(it->id, it->title, strWindows, kWindowPreviewWidth, kWindowPreviewHeight));
 			}
 		}
 	}

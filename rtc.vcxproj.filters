@@ -232,6 +232,12 @@
     <ClCompile Include="ExJsArray.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CBizAccess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="barlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -462,6 +468,12 @@
     <ClInclude Include="ExJsArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CBizAccess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="barlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="rtc.rc">
@@ -570,6 +582,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Plugin.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon2.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

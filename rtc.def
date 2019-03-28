@@ -8,3 +8,5 @@ EXPORTS
 	DllRegisterServer	PRIVATE
 	DllUnregisterServer	PRIVATE
 	DllInstall		PRIVATE
+	GetWindowsNum	@1
+	GetWindowList	@2

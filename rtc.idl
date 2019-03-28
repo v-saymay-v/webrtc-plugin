@@ -60,6 +60,7 @@ interface IMediaDevices : IDispatch{
 	[id(1001), helpstring("method enumerateDevicesPromiseHook")] HRESULT enumerateDevicesPromiseHook([in, optional] VARIANT successCallback, [in, optional] VARIANT errorCallback);
 	
 };
+
 [
 	object,
 	uuid(39C30596-997E-434C-8171-85B2730A9CA6),
@@ -84,6 +85,7 @@ interface IMediaStreamDoubango : IDispatch{ // IMediaStream already exist in Dir
 	[propget, id(12), helpstring("property oninactive")] HRESULT oninactive([out, retval] VARIANT* pVal);
 	[propput, id(12), helpstring("property oninactive")] HRESULT oninactive([in] VARIANT newVal);
 };
+
 [
 	object,
 	uuid(212555EE-F2DC-4E4A-B27C-517D29E0B7A4),
@@ -106,6 +108,7 @@ interface IMediaTrackSupportedConstraints : IDispatch{
 	[propget, id(12), helpstring("property deviceId")] HRESULT deviceId([out, retval] VARIANT_BOOL* pVal);
 	[propget, id(13), helpstring("property groupId")] HRESULT groupId([out, retval] VARIANT_BOOL* pVal);
 };
+
 [
 	object,
 	uuid(59C63051-0B14-4D44-8015-BD42BBCE4964),
@@ -120,6 +123,7 @@ interface IPromise : IDispatch{
 
 	[id(10), helpstring("method toString")] HRESULT toString([out, retval] BSTR* String);
 };
+
 [
 	object,
 	uuid(97C09588-9992-4809-900B-E7319C615DB1),
@@ -130,6 +134,7 @@ interface IPromise : IDispatch{
 interface IErrorMessage : IDispatch{
 	[propget, id(1), helpstring("property name")] HRESULT name([out, retval] BSTR* pVal);
 };
+
 [
 	object,
 	uuid(8F5B0823-989F-4E6F-A486-8ABFD523B22D),
@@ -164,6 +169,7 @@ interface IMediaStreamTrack : IDispatch{
 	[id(101), helpstring("method micLevelMonitoringStart")] HRESULT micLevelMonitoringStart(); // not part of the standard
 	[id(102), helpstring("method micLevelMonitoringStop")] HRESULT micLevelMonitoringStop(); // not part of the standard
 };
+
 [
 	object,
 	uuid(CA8FD86D-739E-49E3-81DB-4DE70F63B892),
@@ -173,6 +179,7 @@ interface IMediaStreamTrack : IDispatch{
 ]
 interface IMediaTrackConstraints : IDispatch{
 };
+
 [
 	object,
 	uuid(CAD81D85-1B8C-4E1D-AD79-0B90D0FD6421),
@@ -186,6 +193,7 @@ interface IMediaDeviceInfo : IDispatch{
 	[propget, id(3), helpstring("property label")] HRESULT label([out, retval] BSTR* pVal);
 	[propget, id(4), helpstring("property groupId")] HRESULT groupId([out, retval] BSTR* pVal);
 };
+
 [
 	object,
 	uuid(B2B753B0-85A5-400F-B4F6-2E04E8DF3AE7),
@@ -265,6 +273,7 @@ interface IRTCPeerConnection : IDispatch{
 	[id(1004), helpstring("method addIceCandidatePromiseHook")] HRESULT addIceCandidatePromiseHook([in] VARIANT RTCIceCandidateInit, [in, optional] VARIANT successCallback, [in, optional] VARIANT errorCallback);
 	[id(1005), helpstring("method getStatsPromiseHook")] HRESULT getStatsPromiseHook([in, optional] VARIANT varMediaStreamTrack, [in, optional] VARIANT successCallback, [in, optional] VARIANT errorCallback);
 };
+
 [
 	object,
 	uuid(C3F56FD7-937E-42A6-8B00-65CB297FB8AA),
@@ -278,6 +287,7 @@ interface IRTCSessionDescription : IDispatch{
 	[propget, id(2), helpstring("property sdp")] HRESULT sdp([out, retval] BSTR* pVal);
 	[propput, id(2), helpstring("property sdp")] HRESULT sdp([in] BSTR newVal); // ReadWrite instead of readOnly to emulate RTCSessionDescriptionInit 
 };
+
 [
 	object,
 	uuid(48ACEE72-5B42-463A-A31D-34AD55E61DE1),
@@ -294,6 +304,7 @@ interface IRTCError : IDispatch{
 
 	[id(10), helpstring("method toString")] HRESULT toString([out, retval] BSTR* String);
 };
+
 [
 	object,
 	uuid(4814FA61-92BC-4EBD-9C1E-D9B3ADB22E5A),
@@ -317,6 +328,7 @@ interface IRTCIceCandidate : IDispatch{
 
 	[id(20), helpstring("method toString")] HRESULT toString([out, retval] BSTR* String);
 };
+
 [
 	object,
 	uuid(CA821F0E-3D50-40B7-8684-60FC3DAFC262),
@@ -329,6 +341,7 @@ interface IRTCPeerConnectionIceEvent : IDispatch{
 	[propget, id(2), helpstring("property candidate")] HRESULT candidate([out, retval] VARIANT* RTCIceCandidate);
 	[propget, id(3), helpstring("property url")] HRESULT url([out, retval] BSTR* pVal);
 };
+
 [
 	object,
 	uuid(5480960F-4930-4981-8661-018094DB19E9),
@@ -339,6 +352,7 @@ interface IRTCPeerConnectionIceEvent : IDispatch{
 interface IMediaStreamEvent : IDispatch{
 	[propget, id(1), helpstring("method stream")] HRESULT stream([out, retval] VARIANT* MediaStream);
 };
+
 [
 	object,
 	uuid(528305BD-AF6E-4E7A-AD37-88C1363F0A70),
@@ -348,6 +362,7 @@ interface IMediaStreamEvent : IDispatch{
 ]
 interface IEmpty : IDispatch{
 };
+
 [
 	object,
 	uuid(83C443DF-10BB-46DE-B5C6-5673512C660F),
@@ -388,6 +403,7 @@ interface IRTCDataChannel : IDispatch{
 	[id(40), helpstring("method addEventListener")] HRESULT addEventListener([in] BSTR type, [in, optional]VARIANT listenerCallback, [in, optional]VARIANT useCapture);
 	[id(41), helpstring("method removeEventListener")] HRESULT removeEventListener([in] BSTR type, [in, optional]VARIANT listenerCallback, [in, optional]VARIANT useCapture);
 };
+
 [
 	object,
 	uuid(08D4E0DC-A254-4FAE-8B72-1CA4F89E5873),
@@ -399,6 +415,7 @@ interface IRTCDataChannelEvent : IDispatch{
 	// https://www.w3.org/TR/webrtc/#dom-rtcdatachannelevent
 	[propget, id(1), helpstring("property channel")] HRESULT channel([out, retval] VARIANT* varRTCDataChannel);
 };
+
 [
 	object,
 	uuid(624A33DF-99D1-49AF-A476-63DA117817DB),
@@ -409,7 +426,11 @@ interface IRTCDataChannelEvent : IDispatch{
 interface IRTCWindow : IDispatch{
 	[propget, id(1), helpstring("property id")] HRESULT id([out, retval] INT_PTR* pVal);
 	[propget, id(2), helpstring("property title")] HRESULT title([out, retval] BSTR* pVal);
+	[propget, id(3), helpstring("property image")] HRESULT image([out, retval] BSTR* pVal);
+	[propget, id(4), helpstring("property width")] HRESULT width([out, retval] INT_PTR* pVal);
+	[propget, id(5), helpstring("property height")] HRESULT height([out, retval] INT_PTR* pVal);
 };
+
 [
 	object,
 	uuid(4E9C389F-59C1-4F67-92E3-C26C05927CE2),
@@ -421,6 +442,7 @@ interface IRTCScreen : IDispatch{
 	[propget, id(1), helpstring("property id")] HRESULT id([out, retval] INT_PTR* pVal);
 	[propget, id(2), helpstring("property title")] HRESULT title([out, retval] BSTR* pVal);
 };
+
 [
 	object,
 	uuid(E393A0A1-58CD-4D33-90A6-E95BEF050752),
@@ -435,6 +457,7 @@ interface IRTCDTMFSender : IDispatch{
 	[propput, id(2), helpstring("property ontonechange")] HRESULT ontonechange([in] VARIANT varEventHandler);
 	[propget, id(3), helpstring("property toneBuffer")] HRESULT toneBuffer([out, retval] BSTR* bstrBuffer);
 };
+
 [
 	object,
 	uuid(BADBBC8D-E670-453A-A1D1-B410F7E74737),
@@ -444,6 +467,7 @@ interface IRTCDTMFSender : IDispatch{
 ]
 interface IRTCTrackEvent : IDispatch{
 };
+
 [
 	object,
 	uuid(C0ECD6D4-39AF-4D4F-8844-59BC8E56BC9E),
@@ -464,6 +488,7 @@ interface IRTCRtpSender : IDispatch{
 	// https://www.w3.org/TR/webrtc/#rtcrtpsender-interface-extensions
 	[propget, id(10), helpstring("property dtmf")] HRESULT dtmf([out, retval] VARIANT* varRTCDTMFSender);
 };
+
 [
 	object,
 	uuid(C2E33966-8DAC-4A24-928E-FF9029027D05),
@@ -475,6 +500,7 @@ interface IRTCDTMFToneChangeEvent : IDispatch{
 	// https://www.w3.org/TR/webrtc/#dom-rtcdtmftonechangeevent
 	[propget, id(1), helpstring("property tone")] HRESULT tone([out, retval] BSTR* varTone);
 };
+
 [
 	object,
 	uuid(0F0B140A-1904-44A5-9FFC-D44B42B367C3),
@@ -489,6 +515,7 @@ interface IRTCStats : IDispatch{
 	[propget, id(3), helpstring("property id")] HRESULT id([out, retval] BSTR* pVal);
 	//!\\ Id numbers within [100 - x] are reserved 
 };
+
 [
 	object,
 	uuid(D19FE2EC-49D5-4A2D-8FE7-A8D5E459341A),
@@ -508,6 +535,7 @@ interface IRTCStatsReport : IDispatch{
 	[id(6), helpstring("method values")] HRESULT values([out, retval] VARIANT* varIterator);
 	[propget, id(7), helpstring("property size")] HRESULT size([out, retval] LONG* pVal);
 };
+
 [
 	object,
 	uuid(B9022511-3E81-4389-9BB0-667FEA36B40C),
@@ -524,6 +552,7 @@ interface IRTCRtpReceiver : IDispatch{
 	[id(4), helpstring("method getParameters")] HRESULT getParameters([out, retval] VARIANT* varRTCRtpParameters);
 	[id(5), helpstring("method getContributingSources")] HRESULT getContributingSources([out, retval] VARIANT* varSequenceRTCRtpContributingSource);
 };
+
 [
 	object,
 	uuid(1DE917D5-1BE6-4D0C-AE95-A35C3E03A2C8),
@@ -537,6 +566,7 @@ interface IMessageEvent : IDispatch{
 	[propget, id(2), helpstring("property origin")] HRESULT origin([out, retval] BSTR* DOMString);
 	[propget, id(3), helpstring("property lastEventId")] HRESULT lastEventId([out, retval] BSTR* DOMString);
 };
+
 [
 	object,
 	uuid(79DA6ABF-DD77-4C1D-93CE-E18904E5D9BD),
@@ -546,19 +576,6 @@ interface IMessageEvent : IDispatch{
 ]
 interface IJsArray : IDispatch{
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 [
 	uuid(5701E57F-4D99-450D-8479-BC9871799B8D),

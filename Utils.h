@@ -159,6 +159,10 @@ public:
 		return S_OK;
 	}
 
+	static HRESULT Utils::ConvertToBMP(const void* _rgb32_ptr, size_t width, size_t height, void** bmp_pptr, size_t *bmp_size_ptr);
+	static HRESULT Utils::ConvertToBase64(const void* _in_ptr, size_t in_size, void **out_pptr, size_t *out_size_ptr, void* (*MemAllocFn)(size_t n) /*= NULL*/);
+	static void Utils::StdMemFree(void** mem);
+
 private:
 	static DISPID s_funcID_WE00_dataChannelSendBlob;
 	static DISPID s_funcID_WE01_wrapArrayBufferIntoUint8Array;

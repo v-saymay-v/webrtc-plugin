@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BizAccessEndPoint>8b0c89f1-0a27-4675-af6d-c6708f00012c</BizAccessEndPoint>
+  <BizAccessSession>609cd3ed3153c57960bef54542034233d7d839808508c831882b274b6f7e02aa</BizAccessSession>
+  <BizAccessRoomId>hbu0000</BizAccessRoomId>
+  <BizAccessUserId>458</BizAccessUserId>
+  <BizAccessUserPhoto>https://asp01.hotbiz.jp/hbu0000/hb_chat_login_attach.cgi?user=233</BizAccessUserPhoto>
+  <BizAccessUserName>テストユーザー</BizAccessUserName>
+  <BizAccessPhoneNo>0135</BizAccessPhoneNo>
+  <HotBizSession>b01a28de9899665cf4b32eb44450afbd</HotBizSession>
+  <HotBizUserId>233</HotBizUserId>
+</Settings><?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BizAccessEndPoint />
+  <BizAccessSession />
+  <BizAccessRoomId />
+  <BizAccessUserId />
+  <BizAccessUserPhoto />
+  <BizAccessUserName />
+  <BizAccessPhoneNo />
+  <HotBizSession />
+  <HotBizUserId />
+</Settings>

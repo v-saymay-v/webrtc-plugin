@@ -438,7 +438,7 @@ static cricket::VideoCapturer* OpenVideoCaptureDevice(const std::string& deviceI
 	if (chromeMediaSource.compare("window") == 0) {
 		if (!chromeMediaSourceId.empty()) {
 			webrtc::DesktopCapturer::SourceId sourceId = static_cast<webrtc::DesktopCapturer::SourceId>(atoll(chromeMediaSourceId.c_str()));
-			ExRTCWindow exRTCWindow(sourceId, kStringEmpty);
+			ExRTCWindow exRTCWindow(sourceId, kStringEmpty, kStringEmpty, 0, 0);
 			return DoubangoDesktopCapturerFactory::CreateWindowCapturer(&exRTCWindow);
 		}
 		return DoubangoDesktopCapturerFactory::CreateScreenCapturer();

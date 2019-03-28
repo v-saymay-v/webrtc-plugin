@@ -1,0 +1,14 @@
+C:\Projects\webrtc-plugin\Launcher\bin\Release\Launcher.exe.config
+C:\Projects\webrtc-plugin\Launcher\bin\Release\Launcher.exe
+C:\Projects\webrtc-plugin\Launcher\bin\Release\Launcher.pdb
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.csprojAssemblyReference.cache
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.Form1.resources
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.Properties.Resources.resources
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.csproj.GenerateResource.cache
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.csproj.CoreCompileInputs.cache
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.exe
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.pdb
+C:\Projects\webrtc-plugin\Launcher\bin\Release\Newtonsoft.Json.dll
+C:\Projects\webrtc-plugin\Launcher\bin\Release\Newtonsoft.Json.pdb
+C:\Projects\webrtc-plugin\Launcher\bin\Release\Newtonsoft.Json.xml
+C:\Projects\webrtc-plugin\Launcher\obj\Release\Launcher.csproj.CopyComplete

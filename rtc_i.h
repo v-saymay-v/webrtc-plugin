@@ -3,11 +3,11 @@
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
 
- /* File created by MIDL compiler version 8.00.0603 */
-/* at Tue Aug 22 14:17:47 2017
+ /* File created by MIDL compiler version 8.01.0622 */
+/* at Tue Jan 19 12:14:07 2038
  */
 /* Compiler settings for rtc.idl:
-    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
+    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.01.0622 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
     VC __declspec() decoration level: 
@@ -16,12 +16,11 @@
 */
 /* @@MIDL_FILE_HEADING(  ) */
 
-#pragma warning( disable: 4049 )  /* more than 64k source lines */
 
 
 /* verify that the <rpcndr.h> version is high enough to compile this file*/
 #ifndef __REQUIRED_RPCNDR_H_VERSION__
-#define __REQUIRED_RPCNDR_H_VERSION__ 475
+#define __REQUIRED_RPCNDR_H_VERSION__ 500
 #endif
 
 #include "rpc.h"
@@ -29,7 +28,7 @@
 
 #ifndef __RPCNDR_H_VERSION__
 #error this stub requires an updated version of <rpcndr.h>
-#endif // __RPCNDR_H_VERSION__
+#endif /* __RPCNDR_H_VERSION__ */
 
 #ifndef COM_NO_WINDOWS_H
 #include "windows.h"
@@ -4889,6 +4888,15 @@ EXTERN_C const IID IID_IRTCWindow;
         virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_title( 
             /* [retval][out] */ BSTR *pVal) = 0;
         
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_image( 
+            /* [retval][out] */ BSTR *pVal) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_width( 
+            /* [retval][out] */ INT_PTR *pVal) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_height( 
+            /* [retval][out] */ INT_PTR *pVal) = 0;
+        
     };
     
     
@@ -4955,6 +4963,18 @@ EXTERN_C const IID IID_IRTCWindow;
             IRTCWindow * This,
             /* [retval][out] */ BSTR *pVal);
         
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE *get_image )( 
+            IRTCWindow * This,
+            /* [retval][out] */ BSTR *pVal);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE *get_width )( 
+            IRTCWindow * This,
+            /* [retval][out] */ INT_PTR *pVal);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE *get_height )( 
+            IRTCWindow * This,
+            /* [retval][out] */ INT_PTR *pVal);
+        
         END_INTERFACE
     } IRTCWindowVtbl;
 
@@ -4996,6 +5016,15 @@ EXTERN_C const IID IID_IRTCWindow;
 
 #define IRTCWindow_get_title(This,pVal)	\
     ( (This)->lpVtbl -> get_title(This,pVal) ) 
+
+#define IRTCWindow_get_image(This,pVal)	\
+    ( (This)->lpVtbl -> get_image(This,pVal) ) 
+
+#define IRTCWindow_get_width(This,pVal)	\
+    ( (This)->lpVtbl -> get_width(This,pVal) ) 
+
+#define IRTCWindow_get_height(This,pVal)	\
+    ( (This)->lpVtbl -> get_height(This,pVal) ) 
 
 #endif /* COBJMACROS */
 
@@ -6911,6 +6940,16 @@ unsigned long             __RPC_USER  VARIANT_UserSize(     unsigned long *, uns
 unsigned char * __RPC_USER  VARIANT_UserMarshal(  unsigned long *, unsigned char *, VARIANT * ); 
 unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT * ); 
 void                      __RPC_USER  VARIANT_UserFree(     unsigned long *, VARIANT * ); 
+
+unsigned long             __RPC_USER  BSTR_UserSize64(     unsigned long *, unsigned long            , BSTR * ); 
+unsigned char * __RPC_USER  BSTR_UserMarshal64(  unsigned long *, unsigned char *, BSTR * ); 
+unsigned char * __RPC_USER  BSTR_UserUnmarshal64(unsigned long *, unsigned char *, BSTR * ); 
+void                      __RPC_USER  BSTR_UserFree64(     unsigned long *, BSTR * ); 
+
+unsigned long             __RPC_USER  VARIANT_UserSize64(     unsigned long *, unsigned long            , VARIANT * ); 
+unsigned char * __RPC_USER  VARIANT_UserMarshal64(  unsigned long *, unsigned char *, VARIANT * ); 
+unsigned char * __RPC_USER  VARIANT_UserUnmarshal64(unsigned long *, unsigned char *, VARIANT * ); 
+void                      __RPC_USER  VARIANT_UserFree64(     unsigned long *, VARIANT * ); 
 
 /* end of Additional Prototypes */
 

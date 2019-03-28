@@ -81,7 +81,7 @@ HRESULT ExMediaDevices::enumerateDevices(__in CComPtr<IDispatch> spDispatch, __o
 			if (!devices->values[i]) {
 				continue;
 			}
-			CComObject<CMediaDeviceInfo>* device;
+			CComObject<CMediaDeviceInfo>* device = NULL;
 			hr = Utils::CreateInstanceWithRef(&device, devices->values[i]);
 			if (SUCCEEDED(hr)) {
 				vect.push_back(CComVariant(device));

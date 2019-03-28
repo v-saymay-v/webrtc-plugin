@@ -1,0 +1,9 @@
+{
+  "name": "jp.asj.hotbizchat",
+  "description": "native messaging for BizAccess screen share",
+  "path": ".\\BizAccess.bat",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://jihcmbhfboalmibcdlacnijiknphkjag/"
+  ]
+}

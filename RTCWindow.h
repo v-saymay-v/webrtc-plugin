@@ -36,6 +36,9 @@ END_COM_MAP()
 
 	STDMETHOD(get_id)(__out INT_PTR* pVal) override;
 	STDMETHOD(get_title)(__out BSTR* pVal) override;
+	STDMETHOD(get_image)(__out BSTR* pVal) override;
+	STDMETHOD(get_width)(__out INT_PTR* pVal) override;
+	STDMETHOD(get_height)(__out INT_PTR* pVal) override;
 
 private:
 	std::shared_ptr<ExRTCWindow> m_ex;

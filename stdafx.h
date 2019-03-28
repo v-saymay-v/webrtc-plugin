@@ -20,5 +20,6 @@
 #include <atlbase.h>
 #include <atlcom.h>
 #include <atlctl.h>
+#include <cvt/wstring>
 
 using namespace ATL;

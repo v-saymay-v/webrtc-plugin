@@ -44,3 +44,30 @@ STDMETHODIMP CRTCWindow::get_title(__out BSTR* pVal)
 	RTC_CHECK_HR_RETURN(Utils::CopyAnsiString(m_ex->title(), pVal));
 	return S_OK;
 }
+
+STDMETHODIMP CRTCWindow::get_image(__out BSTR* pVal)
+{
+	if (!m_ex.get()) {
+		RTC_CHECK_HR_RETURN(E_POINTER);
+	}
+	RTC_CHECK_HR_RETURN(Utils::CopyAnsiString(m_ex->image(), pVal));
+	return S_OK;
+}
+
+STDMETHODIMP CRTCWindow::get_width(__out INT_PTR* pVal)
+{
+	if (!m_ex.get()) {
+		RTC_CHECK_HR_RETURN(E_POINTER);
+	}
+	*pVal = m_ex->width();
+	return S_OK;
+}
+
+STDMETHODIMP CRTCWindow::get_height(__out INT_PTR* pVal)
+{
+	if (!m_ex.get()) {
+		RTC_CHECK_HR_RETURN(E_POINTER);
+	}
+	*pVal = m_ex->height();
+	return S_OK;
+}

@@ -1,0 +1,7 @@
+{
+  "name": "BizAccessAddon",
+  "description": "native messaging for BizAccess screen share",
+  "path": "./BizAccess.bat",
+  "type": "stdio",
+  "allowed_extensions": [ "v_saymay_v@yahoo.co.jp" ]
+}
